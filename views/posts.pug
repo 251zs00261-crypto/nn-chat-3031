@@ -1,5 +1,5 @@
 doctype html
-html(lang="ja" data-bs-theme=currentTheme)
+html(lang="ja")
   head
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
@@ -14,6 +14,11 @@ html(lang="ja" data-bs-theme=currentTheme)
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     )
     link(rel="stylesheet" href="/style.css")
+    script.
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-bs-theme', savedTheme);
+      }
   body.container.overflow-scroll
     nav.navbar.fixed-top.bg-primary
       div.container-fluid
@@ -25,9 +30,9 @@ html(lang="ja" data-bs-theme=currentTheme)
             i.bi-palette-fill
           ul.dropdown-menu.dropdown-menu-end
             li
-              a.dropdown-item(href="/change-theme?mode=light") ライトモード
+              button.dropdown-item(type="button" onclick="setTheme('light')") ライトモード
             li
-              a.dropdown-item(href="/change-theme?mode=dark") ダークモード
+              button.dropdown-item(type="button" onclick="setTheme('dark')") ダークモード
 
     div.my-3
       p.text-muted.text-center 今日の学習・作業の進捗を一行で手軽に記録しましょう。
@@ -71,3 +76,9 @@ html(lang="ja" data-bs-theme=currentTheme)
       crossorigin="anonymous"
     )
     script(src="/nn-chat.js")
+    script.
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-bs-theme', theme);
+        localStorage.setItem('theme', theme);
+        document.cookie = 'theme=' + theme + '; path=/; max-age=2592000';
+      }
